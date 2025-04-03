@@ -1,6 +1,6 @@
 import sys
 from PyQt5.QtWidgets import QApplication, QMainWindow, QMessageBox
-from ui.caesar import Ui_caesar  # Corrected import
+from ui.caesar import Ui_caesar # Corrected import
 import requests
 
 class MyApp(QMainWindow):
@@ -8,20 +8,20 @@ class MyApp(QMainWindow):
         super().__init__()
         self.ui = Ui_caesar()  # Corrected class name
         self.ui.setupUi(self)
-        self.ui.pushButton.clicked.connect(self.call_api_encrypt)  # Corrected button name
-        self.ui.pushButton_2.clicked.connect(self.call_api_decrypt)  # Corrected button name
+        self.ui.btnEncrypt.clicked.connect(self.call_api_encrypt)  # Corrected button name
+        self.ui.btnDecrypt.clicked.connect(self.call_api_decrypt)  # Corrected button name
 
     def call_api_encrypt(self):
         url = "http://127.0.0.1:5000/api/caesar/encrypt"
         payload = {
-            "plain_text": self.ui.textEdit.toPlainText(),  # Corrected text edit name
-            "key": self.ui.lineEdit.text()  # Corrected line edit name
+            "plain_text": self.ui.txtPlaintext.toPlainText(),  # Corrected text edit name
+            "key": self.ui.txtKey.text()  # Corrected line edit name
         }
         try:
             response = requests.post(url, json=payload)
             if response.status_code == 200:
                 data = response.json()
-                self.ui.textEdit_2.setText(data["encrypted_message"])  # Corrected text edit name
+                self.ui.txtCiphertext.setText(data["encrypted_message"])  # Corrected text edit name
                 msg = QMessageBox()
                 msg.setIcon(QMessageBox.Information)
                 msg.setText("Encrypted Successfully")
@@ -34,8 +34,8 @@ class MyApp(QMainWindow):
     def call_api_decrypt(self):
         url = "http://127.0.0.1:5000/api/caesar/decrypt"
         payload = {
-            "cipher_text": self.ui.textEdit_2.toPlainText(),  # Corrected text edit name
-            "key": self.ui.lineEdit.text()  # Corrected line edit name
+            "cipher_text": self.ui.txtCiphertext.toPlainText(),  # Corrected text edit name
+            "key": self.ui.txtKey.text()  # Corrected line edit name
         }
         try:
             response = requests.post(url, json=payload)
